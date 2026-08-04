@@ -1,0 +1,137 @@
+{% extends 'base/base.html' %}
+
+{% block search-bar %}
+<li class="nav-item">
+  <form class="search-bar" method="POST">
+    {% csrf_token %}
+    <div>
+      <input type="text" class="form-control" placeholder="Rechercher un produit" name="search">
+      <a><i class="icon-magnifier"></i></a>
+    </div>
+  </form>
+</li>
+{% endblock %}
+
+
+
+{% block content %}
+<div class="row">
+  <div class="row row-group m-0">
+  </div>
+
+  <div class="col-1 col-lg-3 col-xl-2">
+    
+  </div>
+
+  {% if user.is_authenticated %}
+  <div class="col-10 col-lg-6 col-xl-8">
+    <form action="{% url 'apply:create_produit' %}">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-success btn-lg btn-block"><h5><i class="zmdi zmdi-invert-colors"></i></h5><b>Ajouter un produit</b> </button>
+      <br>
+    </form>
+  </div >
+  {% endif %}
+
+  <div class="col-1 col-lg-3 col-xl-2">
+    
+  </div>
+
+  <div class="col-lg-12">
+    {% if msg %}
+      <div class="alert alert-warning" role="alert">
+        <div class="alert-icon">
+            <b><i class="icon-info"></i></b>
+        </div>
+        <div class="alert-message">
+            <span><b>{{ msg }}</b></span>
+        </div>
+      </div>
+    {% endif %}
+    <div class="form-group">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">LISTE DES PRODUITS MEDICAUX</h5>
+          <div class="table-responsive">
+          <table class="table text-start align-middle table-bordered table-hover mb-0">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">DESIGNATION</th>
+                <th scope="col">PRIX.U</th>
+                <th scope="col">ENTRE</th>
+                <th scope="col">STOCK</th>
+                <th scope="col">T.STOCK</th>
+                <th scope="col">SORTIE</th>
+                <th scope="col">RECETTE</th>
+                <th scope="col">STOCK31</th>
+                <th scope="col">MONTANT TOTAL PHYSIQUE</th>
+                <th scope="col">DATE DE PEREMPTION</th>
+                <th scope="col">DATE D'ENTREE</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for p in produit %}
+                <tr>
+                  <th scope="row"><a href="{% url 'apply:detail_produit' slug=p.slug %}">{{ p.id }}</a></th>
+                  <td><a href="{% url 'apply:detail_produit' slug=p.slug %}">{{ p.desination }}</a></td>
+                  <td><a href="{% url 'apply:detail_produit' slug=p.slug %}">{{ p.prix_u }}</a></td>
+                  <td><a href="{% url 'apply:detail_produit' slug=p.slug %}">{{ p.entre }}</a></td>
+                  <td><a href="{% url 'apply:detail_produit' slug=p.slug %}">{{ p.stock }}</a></td>
+                  <td><a href="{% url 'apply:detail_produit' slug=p.slug %}">{{ p.total_stock }}</a></td>
+                  <td><a href="{% url 'apply:detail_produit' slug=p.slug %}">{{ p.sortie }}</a></td>
+                  <td><a href="{% url 'apply:detail_produit' slug=p.slug %}">{{ p.recette }}</a></td>
+                  <td><a href="{% url 'apply:detail_produit' slug=p.slug %}">{{ p.stock_31 }}</a></td>
+                  <td><a href="{% url 'apply:detail_produit' slug=p.slug %}">{{ p.montant_physique }}</a></td>
+                  {% if p.date_peremption > date_now %}
+                    <td style="background-color: green;">
+                      <a href="{% url 'apply:detail_produit' slug=p.slug %}">{{ p.date_peremption }}</a>
+                    </td>
+                  {% else %}
+                    <td style="background-color: red;">
+                      <a href="{% url 'apply:detail_produit' slug=p.slug %}">{{ p.date_peremption }}</a>
+                    </td>
+                  {% endif %}
+                  <td><a href="{% url 'apply:detail_produit' slug=p.slug %}">{{ p.date_entree }}</a></td>
+                </tr>
+              {% endfor%}
+            </tbody>
+          </table>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div><!--End Row-->
+
+  <div class="row mt-3">
+    <div class="col-md-3 offset-md-4">
+      <ul class="pagination">
+        {% if produit.has_previous %}
+          <li class="page-item" style="background-color: purple;">
+            <a class="page-link" href="?page={{ produit.previous_page_number }} ">Precedent</a>
+          </li>
+        {% else %}
+          <li class="page-item" style="background-color: grey;">
+            <a class="page-link" >Precedent</a>
+          </li>
+        {% endif %}
+
+          <li class="page-item active">
+            <a class="page-link" href="?page={{ produit.number }}"> {{ produit.number }}</a>
+          </li>
+ 
+        {% if produit.has_next %}
+          <li class="page-item" style="background-color: purple;">
+            <a class="page-link" href="?page={{ produit.next_page_number }}">Suivant</a>
+          </li>
+        {% else %}
+          <li class="page-item" style="background-color: grey;">
+            <a class="page-link" >Suivant</a>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

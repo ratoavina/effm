@@ -1,0 +1,46 @@
+{% extends 'base/base.html'%}
+
+{% block title %}
+    <title>DetailVehicule</title>
+{% endblock %}
+
+{% block search-bar %}
+<li class="nav-item">
+  <form class="search-bar" action="{% url 'apply:login' %}" method="POST">
+    <input type="text" class="form-control" placeholder="Rechercher un produit">
+    <a><i class="icon-magnifier"></i></a>
+  </form>
+</li>
+{% endblock %}
+
+
+{% block content %}
+<div class="row">
+    <div class="col-12 col-lg-3 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <h3>Produit n* {{ produit.id }}</h3>
+                <p><b>Desination : </b>{{ produit.desination }}</p>
+            </div>
+            <div class="table-responsive">
+                {% if user.is_authenticated %}
+                <table>
+                    <tr>
+                        <td>
+                            <form action="{% url 'apply:edit_produit' slug=produit.slug %}">
+                                <button type="submit" class="btn btn-primary btn-lg btn-block">Modifier</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form action="{% url 'apply:delete_produit' slug=produit.slug %}">
+                                <button type="submit" class="btn btn-danger btn-lg btn-block">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                </table>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

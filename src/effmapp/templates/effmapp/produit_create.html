@@ -1,0 +1,135 @@
+{% extends 'base/base.html' %}
+
+{% block title %}
+  <title>login</title>
+{% endblock %}
+
+{% block search-bar %}
+<li class="nav-item">
+  <form class="search-bar" action="{% url 'apply:login' %}" method="POST">
+    <input type="text" class="form-control" placeholder="Rechercher un produit">
+    <a><i class="icon-magnifier"></i></a>
+  </form>
+</li>
+{% endblock %}
+
+
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-2">
+
+        </div>
+        <div class="col-md-8">
+            <center>
+                <img class="logos" src="" width="100%">
+                <h2>Pour ajouter un produit</h2>
+                <h3>Veuiller remplir le formulaire</h3>
+            </center>
+            {% if user.is_authenticated %}
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="desination">Designation : </label>
+                    <div class="position-relative has-icon-right">
+                        <input type="text" class="form-control input-shadow" id="id_desination" name="desination" autofocus="" autocapitaliza="none" autocomplete="desination" maxlength="100"  value="{{ desination }}">
+                        <div class="form-control-position">
+                            <i class="icon-user"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="prix_u">Prix Unitaire : </label>
+                    <div class="position-relative has-icon-right">
+                        <input type="text" class="form-control input-shadow" id="id_prix_u" name="prix_u" autofocus="" autocapitaliza="none" autocomplete="prix_u" maxlength="100"  value="{{ prix_u }}">
+                        <div class="form-control-position">
+                            <i class="icon-user"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="entre">Entree : </label>
+                    <div class="position-relative has-icon-right">
+                        <input type="text" class="form-control input-shadow" id="id_entre" name="entre" autofocus="" autocapitaliza="none" autocomplete="entre" maxlength="100"  value="{{ entre }}">
+                        <div class="form-control-position">
+                            <i class="icon-user"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="stock">Stock : </label>
+                    <div class="position-relative has-icon-right">
+                        <input type="text" class="form-control input-shadow" id="id_stock" name="stock" autofocus="" autocapitaliza="none" autocomplete="stock" maxlength="100"  value="{{ stock }}">
+                        <div class="form-control-position">
+                            <i class="icon-user"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="sortie">Sortie : </label>
+                    <div class="position-relative has-icon-right">
+                        <input type="text" class="form-control input-shadow" id="id_sortie" name="sortie" autofocus="" autocapitaliza="none" autocomplete="sortie" maxlength="100"  value="{{ sortie }}">
+                        <div class="form-control-position">
+                            <i class="icon-user"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="sortie">Date d'entree : </label>
+                    <div class="position-relative has-icon-right">
+                        <input type="date" class="form-control input-shadow" id="id_date_entree" name="date_entree" autofocus="" autocapitaliza="none">
+                        <div class="form-control-position">
+                            <i class="icon-user"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="sortie">Date de peremption : </label>
+                    <div class="position-relative has-icon-right">
+                        <input type="date" class="form-control input-shadow" id="id_date_peremption" name="date_peremption" autofocus="">
+                        <div class="form-control-position">
+                            <i class="icon-user"></i>
+                        </div>
+                    </div>
+                </div>
+                {% if message1 %}
+                    <div class="alert alert-success" role="alert">
+                        <div class="alert-icon">
+                            <i class="icon-info"></i>
+                        </div>
+                        <div class="alert-message">
+                            <span>{{ message1 }}</span>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if message2 %}
+                    <div class="alert alert-warning" role="alert">
+                        <div class="alert-icon">
+                            <i class="icon-info"></i>
+                        </div>
+                        <div class="alert-message">
+                            <span>{{ message2 }}</span>
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="form-row">
+                    <div class="col-md-2">
+
+                    </div>
+                    <div class="col-md-8">
+                        <button type="submit" class="btn btn-primary btn-lg btn-block">Ajouter</button>
+                    </div>
+                    <div class="col-md-2">
+                        
+                    </div>
+                </div>
+            </form>
+        </div>
+        {% endif %}
+        <div class="col-md-2">
+
+        </div>
+    </div>
+</div>
+{% endblock %}

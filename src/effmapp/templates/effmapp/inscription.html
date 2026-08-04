@@ -1,0 +1,79 @@
+{% extends 'base/base.html' %}
+
+{% block title %}
+  <title>inscription</title>
+{% endblock %}
+
+{% block content %}
+	<div class="container">
+    <div class="row">
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-8">
+        	<center>
+            	<img class="logos" src="" width="100%">
+          	</center>
+          	<h1><b>Veuiller remplir le formulaire</b></h1>
+          	<form method="POST">
+          		{% csrf_token %}
+            	<div class="form-row">
+              		<div class="form-group col-md-6">
+                		<label for="nom de famille">Nom de famille</label>
+                		<input type="text" class="form-control" id="input4" name="famille" value="{{ famille }}" />
+              		</div>
+              		<div class="form-group col-md-6">
+                		<label for="username">Prenom</label>
+                		<input type="text" class="form-control" id="username" name="username" value="{{ username }}" />
+              		</div>
+        			</div>
+            	<div class="form-group">
+              		<label for="email">Adresse Email</label>
+              		<input type="email" class="form-control" id="id_email" name="email" value="{{ email }}" />
+            	</div>
+            	<div class="form-row">
+             		<div class="form-group col-md-6">
+                		<label for="contact">Contact</label>
+                		<input type="text" class="form-control" id="inputContact" name="contact" value="{{ contact }}">
+              		</div>
+              		<div class="form-group col-md-6">
+                		<label for="dtn">Date de naissance</label>
+                		<input type="date" class="form-control" id="inputDate" name="dtn" value="{{ dtn }}">
+              		</div>
+            	</div>
+                {% if error %}
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Nouveau mot de passe</label>
+                        <input type="password" class="form-control" id="inputError" name="password1" required="" style="border-color: red;">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword2">Confirmer le mot de passe</label>
+                        <input type="password" class="form-control" id="inputError" name="password2" required="" style="border-color: red;">
+                    </div>
+                    <div class="alert alert-danger">
+                      <strong>{{ error }}</strong>
+                    </div>
+                {% else %}
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Nouveau mot de passe</label>
+                        <input type="password" class="form-control" id="password1" name="password1" required="">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword2">Confirmer le mot de passe</label>
+                        <input type="password" class="form-control" id="password2" name="password2" required="">
+                    </div>
+                {% endif %}
+            	<div class="form-row">
+              		<div class="col-md-2"></div>
+              		<div class="col-md-8">
+                		<button type="submit" class="btn btn-primary btn-lg btn-block">Envoyer</button>
+              		</div>
+              		<div class="col-md-2"></div>
+            	</div>
+          	</form>
+        </div>
+        <div class="col-md-2">
+        </div>
+    </div>
+  </div>
+  <br/><br/><br/><br/><br/><br/>
+{% endblock %}

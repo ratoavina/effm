@@ -1,0 +1,38 @@
+{% extends 'base/base.html' %}
+
+{% block title %}
+    <title>DeleteTArif</title>
+{% endblock %}
+
+
+
+{% block content %}
+    <br/><br/><br/><br/>
+    <h1>Supprimer un tarif</h1>
+    <div class="alert alert-danger" role="alert">
+        <div class="alert-icon">
+            <i class="icon-info"></i>
+        </div>
+        <div class="alert-message">
+            <span><strong>Attention!</strong> Etes vous sur de vouloir supprimer "{{ object }}" ?</span>
+        </div>
+    </div>
+    {% if user.is_authenticated %}
+    <table>
+        <tr>
+            <td>
+                <form action="{% url 'apply:liste_produit' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">Anuler</button>
+                </form>
+            </td>
+            <td>
+                <form method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-lg btn-block">Supprimer</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+    {% endif %}
+{%  endblock %}

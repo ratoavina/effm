@@ -1,0 +1,4 @@
+individus
+associations
+fondations
+gouvernements

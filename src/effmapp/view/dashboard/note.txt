@@ -1,0 +1,7 @@
+nombre de beneficiaires
+nombre de projets actifs
+dons recus
+budget restant
+activites du mois
+carte des projets
+graphiques

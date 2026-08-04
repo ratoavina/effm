@@ -1,0 +1,108 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}
+  <title>Page de connexion</title>
+{% endblock %}
+
+{% if form.non_field_errors %}
+    {% for error in form.non_field_errors %}
+        <div class="alert alert-danger">
+            {{ error }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+		<div class="col-md-3">
+        </div>
+		<div class="col-md-8">
+			<div class="hold-transition login-page">
+				<div class="login-box">
+				<!-- /.login-logo -->
+					<div class="card card-outline card-primary">
+						<div class="card-header text-center">
+							<a href="../../index2.html" class="h1"><b>Effmap</b>-Log</a>
+						</div>
+						<div class="card-body">
+						<p class="login-box-msg">Connectez-vous</p>
+
+						<form method="post">
+							{% csrf_token %}
+							<div class="input-group mb-3">
+								<input type="email" class="form-control" placeholder="Email" id="id_username" name="username" autofocus="" autocapitaliza="none" autocomplete="username" maxlength="255" required="" value="">
+								<div class="input-group-append">
+									<div class="input-group-text">
+										<span class="fas fa-envelope"></span>
+									</div>
+								</div>
+							</div>
+							<div class="input-group mb-3">
+								<input type="password" class="form-control" placeholder="Password" name="password" id="id_password" autocomplete="current-password" required="">
+								<div class="input-group-append">
+									<div class="input-group-text">
+									<span class="fas fa-lock"></span>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+							<div class="col-5">
+								<div class="icheck-primary">
+									<input type="checkbox" id="remember">
+									<label for="remember">
+										Se souvenir de moi
+									</label>
+								</div>
+							</div>
+							<!-- /.col -->
+							<div class="col">
+								<button type="submit" class="btn btn-primary btn-block">Se connecter</button>
+							</div>
+							<!-- /.col -->
+							</div>
+						</form>
+
+					
+
+						<p class="mb-1">
+							<a href="#">J'ai oublié mon mot de passe</a>
+						</p>
+						<p class="mb-0">
+							<a href="{% url 'apply:inscription' %}" class="text-center">S'inscrire pour devenir membre</a>
+						</p>
+						{% if form.errors and not form.non_field_errors %}
+							<p class="errornote">
+								{% if form.errors.items|length == 1 %}
+									Please correct the error below.
+								{% else %}
+									Please correct the errors below.
+								{% endif %}
+							</p>
+						{% endif %}
+						{% if form.non_field_errors %}
+							{% for error in form.non_field_errors %}
+								<p class="alert alert-danger">
+								{{ error }}
+								</p>
+							{% endfor %}
+						{% endif %}
+						</div>
+						<!-- /.card-body -->
+					</div>
+				<!-- /.card -->
+				</div>
+				<!-- /.login-box -->
+
+				<!-- jQuery -->
+				<script src="../../plugins/jquery/jquery.min.js"></script>
+				<!-- Bootstrap 4 -->
+				<script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+				<!-- AdminLTE App -->
+				<script src="../../dist/js/adminlte.min.js"></script>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
