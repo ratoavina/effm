@@ -1,8 +1,10 @@
+# /home/runner/work/effm/effm/src/effmapp/api/urls.py
 from django.urls import path
-from .views import create_user
-from .views import get_users
+from .views import UserCreateAPIView, UserListAPIView, UserUpdateDeleteAPIView
 
 urlpatterns = [
-    path("users/", create_user, name="api_create_user"),
-    path("users/get/", get_users, name="api_get_users")
+    path("users/create/", UserCreateAPIView.as_view(), name="api_users_create"),
+    path("users/get/", UserListAPIView.as_view(), name="api_users_get"),
+    path("users/update/<int:user_id>/", UserUpdateDeleteAPIView.as_view(), name="api_users_update"),
+    path("users/delete/<int:user_id>/", UserUpdateDeleteAPIView.as_view(), name="api_users_delete"),
 ]

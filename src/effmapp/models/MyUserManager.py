@@ -7,27 +7,34 @@ from datetime import *
 
 
 class MyUserManager(BaseUserManager):
-	def create_user(self, email, name, password=None):
+	def create_user(self, email, name, password=None, **extra_fields):
 		if not email:
 			raise ValueError("Vous devez entrer un email")
+		if not name:
+			raise ValueError("Vous devez entrer un nom")
 
 		user = self.model(
 			email=self.normalize_email(email),
-			name=name
+			name=name,
+            **extra_fields # Manquant avant
 		)
 
 		user.set_password(password)
-		user.save()
+		user.save(using=self._db)
 		return user
 
-	def create_superuser(self, email, name=None, password=None):
+	def create_superuser(self, email, name=None, password=None, **extra_fields):
+		extra_fields.setdefault("is_admin", True)
+		extra_fields.setdefault("is_staff", True)
+		extra_fields.setdefault("is_active", True)
+
 		user = self.create_user(
 			email=email,
 			password=password,
-			name=name
+			name=name,
+            **extra_fields
 			)
-		user.is_admin = True
-		user.is_staff = True
-		user.save()
+		# user.is_admin = True
+		# user.is_staff = True
+		# user.save()
 		return user
-

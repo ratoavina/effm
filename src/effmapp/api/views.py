@@ -1,62 +1,72 @@
-import json
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_http_methods
+# /home/runner/work/effm/effm/src/effmapp/api/views.py
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
+
 from effmapp.models.User import User
+from .serializers import UserCreateSerializer, UserReadSerializer, UserUpdateSerializer
+
+from django.shortcuts import get_object_or_404
 
 
-@csrf_exempt
-@require_http_methods(["POST"])
-def create_user(request):
-    try:
-        data = json.loads(request.body.decode("utf-8"))
-    except Exception:
-        return JsonResponse({"ok": False, "message": "JSON invalide"}, status=400)
+class UserCreateAPIView(APIView):
+    # permissions = [AllowAny]  # ou IsAdminUser selon ton besoin
+    permissions = [IsAdminUser]
 
-    name = data.get("name")
-    email = data.get("email")
-    password = data.get("password")
-
-    if not name or not email or not password:
-        return JsonResponse(
-            {"ok": False, "message": "name, email et password sont obligatoires"},
-            status=400
+    def post(self, request):
+        serializer = UserCreateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        return Response(
+            {
+                "ok": True,
+                "message": "Utilisateur créé",
+                "data": UserReadSerializer(user).data
+            },
+            status=status.HTTP_201_CREATED
         )
 
-    if User.objects.filter(email=email).exists():
-        return JsonResponse(
-            {"ok": False, "message": "Cet email existe déjà"},
-            status=409
+
+class UserListAPIView(APIView):
+    permission_classes = [IsAuthenticated]  # mieux que public
+
+    def get(self, request):
+        users = User.objects.all().order_by("id")
+        data = UserReadSerializer(users, many=True).data
+        return Response(
+            {"ok": True, "count": len(data), "data": data},
+            status=status.HTTP_200_OK
         )
 
-    user = User.objects.create_user(
-        email=email,
-        name=name,
-        # ******
-    )
 
-    return JsonResponse(
-        {
-            "ok": True,
-            "message": "Utilisateur créé",
-            "data": {
-                "id": user.id,
-                "name": user.name,
-                "email": user.email
-            }
-        },
-        status=201
-    )
+class UserUpdateDeleteAPIView(APIView):
+    permission_classes = [IsAuthenticated, IsAdminUser]
 
-@require_http_methods(["GET"])
-def get_users(request):
-    users = User.objects.all().values(
-        "id", "name", "email", "prenom", "sexe", "phone",
-        "adresse", "ville", "pays", "region", "profession",
-        "is_active", "is_staff", "is_admin"
-    )
-    return JsonResponse({
-        "ok": True,
-        "count": len(users),
-        "data": list(users)
-    }, status=200)
+    def put(self, request, user_id):
+        user = get_object_or_404(User, id=user_id)
+        serializer = UserUpdateSerializer(user, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        return Response(
+            {"ok": True, "message": "Utilisateur mis à jour", "data": UserReadSerializer(user).data},
+            status=status.HTTP_200_OK
+        )
+
+    def patch(self, request, user_id):
+        user = get_object_or_404(User, id=user_id)
+        serializer = UserUpdateSerializer(user, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        return Response(
+            {"ok": True, "message": "Utilisateur partiellement mis à jour", "data": UserReadSerializer(user).data},
+            status=status.HTTP_200_OK
+        )
+
+    def delete(self, request, user_id):
+        user = get_object_or_404(User, id=user_id)
+        user.delete()
+        return Response(
+            {"ok": True, "message": "Utilisateur supprimé"},
+            status=status.HTTP_200_OK
+        )
